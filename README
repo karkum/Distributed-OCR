@@ -1,0 +1,40 @@
+Distributed OCR Capstone project
+
+The code is split into what made sense to me. 
+
+In the master/jar-code, the shell script in there shows the commands used to make the SendCombine.jar
+
+Here are the addresses of our machines that are currently running:
+master: ec2-50-16-136-236.compute-1.amazonaws.com
+dobby1: ec2-50-17-24-49.compute-1.amazonaws.com
+dobby2: ec2-23-23-6-173.compute-1.amazonaws.com
+
+Here is the tree structure of our project: 
+
+client
+│   └── ClientTest.java
+├── README
+└── server
+    ├── master
+    │   ├── cgi-bin
+    │   │   ├── IDT.jar
+    │   │   ├── SendCombine.jar
+    │   │   ├── Split.jar
+    │   │   └── upload.py
+    │   ├── html
+    │   │   └── index2.html
+    │   └── jar-code
+    │       ├── ImageConstructor.java
+    │       ├── makeSendCombine.sh
+    │       ├── manifest_sendcombine.txt
+    │       ├── manifest_split.txt
+    │       ├── SendAll.java
+    │       ├── Split.java
+    │       └── TesseractInfo.java
+    └── slave
+        ├── cgi-bin
+        │   └── upload.py
+        └── html
+            └── index.html
+
+9 directories, 16 files
