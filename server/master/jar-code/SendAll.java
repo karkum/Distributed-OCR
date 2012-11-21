@@ -35,14 +35,13 @@ public class SendAll {
 		File[] files = dir.listFiles();
 		ArrayList<URLConnection> connections = new ArrayList<URLConnection>();
 		OutputStream os = null;
-		System.out.println("Number of files: " + files.length);
 		for (File file : files) {
 			try {
 				URLConnection conn = null;
 				if (file == null) {
 					System.out.println("FILE WAS NULL\n");
 				}
-				System.out.println(file.getAbsolutePath());
+				//System.out.println(file.getAbsolutePath());
 				URL url = new URL("http://" + host + "/cgi-bin/upload.py");
 				conn = url.openConnection();
 				conn.setDoOutput(true);
@@ -101,7 +100,7 @@ public class SendAll {
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
-				System.out.println("Close connection");
+				//System.out.println("Close connection");
 				try {
 					os.close();
 				} catch (Exception e) {
@@ -121,7 +120,7 @@ public class SendAll {
 				do {
 					len = is.read(data);
 					if (len > 0) {
-						System.out.println("Adding: " + new String(data, 0, len));
+					//	System.out.println("Adding: " + new String(data, 0, len));
 						output.add(new String(data, 0, len));
 					}
 				} while (len > 0);
@@ -142,9 +141,7 @@ public class SendAll {
 			try {
 				if (str != null && str.length() != 0) {
 					Scanner scan = new Scanner(str);
-					System.out.println("Here:" + str);
 					String firstLine = scan.nextLine();
-					System.out.println("String we are parsing: " + firstLine);
 					String [] numbers = firstLine.split(" ");
 					int x = Integer.valueOf(numbers[0]);
 					int y = Integer.valueOf(numbers[1]);
@@ -160,10 +157,11 @@ public class SendAll {
 				}
 			
 		} catch (Exception e) {
-			System.out.println("Error parsing image.\n");
+		//	System.out.println("Error parsing image.\n");
 			continue;
 		}
 		}
+		
 		ImageConstructor construct = new ImageConstructor(infos);
 		System.out.println(construct.getFinalString());
 	}
