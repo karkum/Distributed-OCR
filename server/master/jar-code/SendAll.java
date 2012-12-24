@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -117,13 +118,15 @@ public class SendAll {
 				char buff = 1024;
 				int len;
 				byte[] data = new byte[buff];
+				StringBuilder sb = new StringBuilder();
 				do {
 					len = is.read(data);
 					if (len > 0) {
-					//	System.out.println("Adding: " + new String(data, 0, len));
-						output.add(new String(data, 0, len));
+						//System.out.println("Adding: " + new String(data, 0, len));
+						sb.append(new String(data, 0, len));
 					}
 				} while (len > 0);
+				output.add(sb.toString());
 			} catch (Exception e) {
 				
 			}
@@ -152,13 +155,18 @@ public class SendAll {
 						buffer.append(scan.nextLine());
 					}
 					String data = buffer.toString();
+					String path = files[i].getAbsolutePath();
+					PrintWriter writer = new PrintWriter(path.substring(0, path.length() - 3) + "txt");
+					writer.append(data);
+					writer.flush();
+					writer.close();
 					TesseractInfo info = new TesseractInfo(x, y, w, h, data);
 					infos[i++] = info;
 				}
 			
 		} catch (Exception e) {
 		//	System.out.println("Error parsing image.\n");
-			continue;
+			System.out.println(e.toString());
 		}
 		}
 		

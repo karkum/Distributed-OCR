@@ -23,7 +23,7 @@ public class Split {
 		}
 	}
 	public static String[] split(String textFileName, String imageFileName, String outdir) throws InterruptedException, Exception {
-		String command = "java -jar IDT.jar -f " + imageFileName + " -o text";
+		String command = "java -jar IDT.jar -f " + imageFileName + " -t 6 -o text";
 		System.out.println(command);
 		Process process = Runtime.getRuntime().exec(command.split(" "));
 		if (process.waitFor() != 0) {
@@ -32,7 +32,7 @@ public class Split {
 		Scanner scan = new Scanner(new File(textFileName));
 		BufferedImage img = ImageIO.read(new File(imageFileName));
 		int numOfSplits = scan.nextInt();
-        	BufferedImage images[] = new BufferedImage[numOfSplits];
+        	ArrayList<BufferedImage> images = new ArrayList<BufferedImage>();
         	String [] filenames = new String[numOfSplits];
 		ArrayList <Crop>crops = new ArrayList<Crop>();
 		int count = 0;
@@ -49,6 +49,8 @@ public class Split {
 				y = 0;
 			int height = Integer.valueOf(arr[2]);
 			int width = Integer.valueOf(arr[3]);
+			if (height < 57 && width < 57)
+				continue;
 			crops.add(new Crop(new Point(x, y), width, height));
 		}
 		for(Crop c : crops) {
@@ -63,16 +65,16 @@ public class Split {
 			if (y + c.height >= img.getHeight()) {
 				height = img.getHeight() - y - 1;
 			}
-			images[count] = new BufferedImage(width, height, img.getType());
-			Graphics2D gr = (Graphics2D)images[count].getGraphics();
+			images.add(new BufferedImage(width, height, img.getType()));
+			Graphics2D gr = (Graphics2D)images.get(count).getGraphics();
 			BufferedImage subImag = img.getSubimage(x, y, width, height);
 			gr.drawImage(subImag, 0, 0, width, height, null );
 			gr.dispose();
 			count++;
 		}
-		for (int i = 0; i < images.length; i++) {
+		for (int i = 0; i < images.size(); i++) {
             Crop cr = crops.get(i);
-			ImageIO.write(images[i], "png", new File(outdir+"img" + i + "_" + cr.topLeft.x + "_" + cr.topLeft.y + "_" + cr.height + "_" + cr.width +"_.png"));
+			ImageIO.write(images.get(i), "png", new File(outdir+"img" + i + "_" + cr.topLeft.x + "_" + cr.topLeft.y + "_" + cr.height + "_" + cr.width +"_.png"));
 	        filenames[i] = "img" + i + ".png";
         }
         return filenames;
